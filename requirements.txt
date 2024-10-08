@@ -7,3 +7,5 @@ transformers
 accelerate
 sentencepiece
 flash-attn
+rouge-score
+pytrec_eval

@@ -173,3 +173,9 @@ slurm
 
 *.ipynb
 gty*
+
+## Xinhao dev
+.idea/
+DS_Store
+exp/
+*.sh
