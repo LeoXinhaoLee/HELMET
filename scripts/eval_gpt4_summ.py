@@ -432,7 +432,7 @@ def check_metrics(model, results_file, output_file):
     return results
 
 if __name__ == "__main__":
-    model = OpenAIModel("azure/gpt-4o-2024-05-13", temperature=0.1, generation_max_length=4096)
+    model = OpenAIModel("gpt-4o-2024-05-13", temperature=0.1, generation_max_length=4096)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_shards", type=int, default=1)
@@ -448,7 +448,7 @@ if __name__ == "__main__":
 
     #just replace the glob pattern
     all_paths = [glob.glob(f"output/{m}/multi_lexsum_*_v12_*max400min*.json") for m in model_to_check] + \
-                [glob.glob(f"output/{m}/infbench_sum_*_v12_*max1200min*.json") for m in model_to_check]
+                [glob.glob(f"output/{m}/infbench_sum_*_*max1200min*.json") for m in model_to_check]
 
     all_paths = [item for sublist in all_paths for item in sublist if item.endswith(".json")]
     all_paths = [p for p in all_paths if not os.path.exists(p.replace(".json", "-gpt4eval_o.json"))]
