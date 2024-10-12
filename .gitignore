@@ -178,4 +178,5 @@ gty*
 .idea/
 DS_Store
 exp/
+data/
 *.sh

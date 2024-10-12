@@ -447,7 +447,8 @@ if __name__ == "__main__":
     model_to_check = ['gpt-4-0125-preview', 'gpt-4o-2024-05-13', 'gpt-4o-2024-08-06', 'gpt-4o-mini-2024-07-18', 'claude-3-5-sonnet-20240620', 'gemini-1.5-flash-001', 'gemini-1.5-pro-001', 'Meta-Llama-3-8B-Theta8M', 'Meta-Llama-3-8B-Instruct-Theta8M', 'Meta-Llama-3-70B-Theta8M', 'Meta-Llama-3-70B-Instruct-Theta8M', 'Meta-Llama-3.1-8B', 'Meta-Llama-3.1-8B-Instruct', 'Meta-Llama-3.1-70B', 'Meta-Llama-3.1-70B-Instruct', "Llama-3.2-1B", "Llama-3.2-1B-Instruct", "Llama-3.2-3B", "Llama-3.2-3B-Instruct", 'llama-2-7b-80k-basefixed', 'Yarn-Llama-2-7b-128k', 'Mistral-7B-Instruct-v0.1', 'Mistral-7B-Instruct-v0.2', 'Mistral-7B-v0.3', 'Mistral-7B-Instruct-v0.3', 'Mistral-Nemo-Instruct-2407', 'MegaBeam-Mistral-7B-512k', 'Phi-3-mini-128k-instruct', 'Phi-3-small-128k-instruct', 'Phi-3-medium-128k-instruct', 'Phi-3.5-mini-instruct', 'Yi-6B-200K', 'Yi-9B-200K', 'Yi-34B-200K', 'Qwen2-7B-Instruct', 'Qwen2-57B-A14B-Instruct', 'AI21-Jamba-1.5-Mini', 'prolong-512k-instruct-20b-theta128m',]
 
     #just replace the glob pattern
-    all_paths = [glob.glob(f"output/{m}/multi_lexsum_*_v12_*max400min*.json") for m in model_to_check] + [glob.glob(f"output/{m}/infbench_sum_*_v12_*max1200min*.json") for m in model_to_check]
+    all_paths = [glob.glob(f"output/{m}/multi_lexsum_*_v12_*max400min*.json") for m in model_to_check] + \
+                [glob.glob(f"output/{m}/infbench_sum_*_v12_*max1200min*.json") for m in model_to_check]
 
     all_paths = [item for sublist in all_paths for item in sublist if item.endswith(".json")]
     all_paths = [p for p in all_paths if not os.path.exists(p.replace(".json", "-gpt4eval_o.json"))]

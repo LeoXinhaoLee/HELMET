@@ -1,0 +1,11 @@
+input_max_length: 8192,8192,8192,8192,8192
+datasets: icl_trec_coarse_400shot_balance,icl_trec_fine_400shot_balance,icl_banking77_360shot_balance,icl_clinic150_440shot_balance,icl_nlu_510shot_balance
+generation_max_length: 20,20,20,20,20
+test_files: ',,,,,'
+demo_files: ',,,,,'
+use_chat_template: false
+max_test_samples: 100
+shots: 0
+stop_new_line: true
+model_name_or_path: meta-llama/Llama-3.1-8B-Instruct
+output_dir: output/Llama-3.1-8B-Instruct

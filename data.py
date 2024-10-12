@@ -90,6 +90,7 @@ def load_qa(dataset, path, demo_path, max_test_samples=None, popularity_threshol
     # demo_template = "Document (Title: {gold_title}): {gold_doc}\n\nQuestion: {question}\nAnswer: {answer}"
     demo_template = "{documents}\n\nQuestion: {question}\nAnswer: {answer}"
     passage_template = "Document (Title: {title}): {text}"
+
     def update(sample):
         demos = demo_data
         demo_text = ""
@@ -112,11 +113,22 @@ def load_qa(dataset, path, demo_path, max_test_samples=None, popularity_threshol
                 # seed ensures that we get the same demos for the same question
                 demos = demos.shuffle(seed=hash(sample[key]) % ((sys.maxsize + 1) * 2))
                 demos = drop_duplicates(demos, key).select(range(shots))
-            demo_text = "\n\n".join([demo_template.format(**d, documents="\n\n".join([passage_template.format(**c) for c in d["ctxs"]]), answer=d["answers"][0]) for d in demos]) + "\n\n"
+
+            demo_text = "\n\n".join(
+                [demo_template.format(
+                    **d,
+                    documents="\n\n".join([passage_template.format(**c) for c in d["ctxs"]]),
+                    answer=d["answers"][0]
+                ) for d in demos]
+            ) + "\n\n"
+
         passage_text = ""
+
         if len(sample['ctxs']) > 0:
             passage_text = "\n\n".join([passage_template.format(**c) for c in sample['ctxs']])
+
         return {"demos": demo_text, "context": passage_text, "answer": sample["answers"]}
+
     data = data.map(update)
 
     return {
@@ -408,8 +420,8 @@ def load_icl(dataset, max_test_sample=None, seed=42):
         label_field = "label"
         num_labels = 2
     elif "banking77" in dataset.lower():
-        train_data = load_dataset("PolyAI/banking77")["train"]
-        test_data = load_dataset("PolyAI/banking77")["test"]
+        train_data = load_dataset("PolyAI/banking77", trust_remote_code=True)["train"]
+        test_data = load_dataset("PolyAI/banking77", trust_remote_code=True)["test"]
         id2label = train_data.features["label"].names
         id2label = {i: id2label[i] for i in range(len(id2label))}
         text_field = "text"

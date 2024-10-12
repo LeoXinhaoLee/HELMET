@@ -1,3 +1,5 @@
+import pdb
+
 import os
 
 from collections import defaultdict
@@ -26,6 +28,8 @@ logger.setLevel(logging.INFO)
 
 
 def run_test(args, model, dataset, test_file, demo_file):
+    import pdb
+
     logger.info(f"running test on {dataset} with test {test_file} and demo {demo_file}")
     # dataset specific changes tag
     tag = args.tag
@@ -57,6 +61,8 @@ def run_test(args, model, dataset, test_file, demo_file):
         for idx, inputs in enumerate(tqdm(dataloader)):
             test_item = data["data"][idx]
             inputs, input_text = inputs[0] # batch size is just 1
+            if args.debug:
+                pdb.set_trace()
             if args.count_tokens:
                 metrics["input_len"].append(inputs.input_ids.shape[1])
                 continue
@@ -66,14 +72,19 @@ def run_test(args, model, dataset, test_file, demo_file):
                 logger.info(f"skipping example {idx+1} because the model returned None")
                 continue
 
-            # If we do not use the chat template, then we are doing completion, and for the sake of parsing, we want to prepend the system prompt to the input. 
+            if args.debug:
+                pdb.set_trace()
+            # If we do not use the chat template, then we are doing completion, and for the sake of parsing, we want to prepend the system prompt to the input.
             # For example, since we are autocompleting "Answer:"" in the input, then we should prepend the system prompt to the output as well.
             # This requires some coordination from the dataset preprocessing
             if not args.use_chat_template:
                 prepend_text = data["system_template"].format(**test_item)
                 output["output"] = prepend_text + output["output"]
-            
+
             mets, others = data['post_process'](output, test_item)
+            if args.debug:
+                pdb.set_trace()
+
             output.update({**others, **mets})
             for k, v in mets.items():
                 metrics[k].append(v)
